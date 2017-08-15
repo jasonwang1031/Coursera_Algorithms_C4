@@ -1,3 +1,20 @@
+def bellman_ford(graph, source):
+    global has_cycle
+
+    distance, predecessor = initialize(graph, source)
+    for i in range(len(graph)-1):
+        for u in graph:
+            for v in graph[u]:
+                compare(u, v, graph, distance, predecessor)
+
+    # check for negative cycles
+    for u in graph:
+        for v in graph[u]:
+            if distance[v] > distance[u] + graph[u][v]:
+                has_cycle = True
+
+    return distance, predecessor
+
 def initialize(graph, source):
     destination = {}
     predecessor = {}
@@ -7,27 +24,10 @@ def initialize(graph, source):
     destination[source] = 0
     return destination, predecessor
 
-def relax(vertice, previous, graph, distance, predecessor):
+def compare(vertice, previous, graph, distance, predecessor):
     if distance[previous] > distance[vertice] + graph[vertice][previous]:
         distance[previous] = distance[vertice] + graph[vertice][previous]
         predecessor[previous] = vertice
-
-def bellman_ford(graph, source):
-    global has_cycle
-
-    distance, predecessor = initialize(graph, source)
-    for i in range(len(graph)-1):
-        for u in graph:
-            for v in graph[u]:
-                relax(u, v, graph, distance, predecessor)
-
-    # check for negative cycles
-    for u in graph:
-        for v in graph[u]:
-            if distance[v] > distance[u] + graph[u][v]:
-                has_cycle = True
-
-    return distance, predecessor
 
 def getSmallest(distances, smallest):
     for idx in distances:
