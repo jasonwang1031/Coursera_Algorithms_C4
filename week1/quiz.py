@@ -1,7 +1,13 @@
 def bellman_ford(graph, source):
     global has_cycle
 
-    distance, predecessor = initialize(graph, source)
+    destination = {}
+    predecessor = {}
+    for vertice in graph:
+        destination[vertice] = float('Inf')
+        predecessor[vertice] = None
+    destination[source] = 0
+
     for i in range(len(graph)-1):
         for u in graph:
             for v in graph[u]:
@@ -14,15 +20,6 @@ def bellman_ford(graph, source):
                 has_cycle = True
 
     return distance, predecessor
-
-def initialize(graph, source):
-    destination = {}
-    predecessor = {}
-    for vertice in graph:
-        destination[vertice] = float('Inf')
-        predecessor[vertice] = None
-    destination[source] = 0
-    return destination, predecessor
 
 def compare(vertice, previous, graph, distance, predecessor):
     if distance[previous] > distance[vertice] + graph[vertice][previous]:
